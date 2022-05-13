@@ -23,13 +23,18 @@ client = commands.Bot(command_prefix="?", intents=intents)
 @client.command(name="play", help="play from a random radio. play <url> play the specific song/video from YouTube")
 async def play(ctx, url: str = ""):
     default_channels = [
-        # "https://www.youtube.com/watch?v=4p2TyTyMKws",
         "https://www.youtube.com/watch?v=5qap5aO4i9A",
         "https://www.youtube.com/watch?v=tCs48OFv7xA",
-        # "https://www.youtube.com/watch?v=-5KAN9_CzSA",
-        # "https://www.youtube.com/watch?v=kgx4WGK0oNU",
-        # "https://www.youtube.com/watch?v=7NOSDKb0HlU",
-        # "https://www.youtube.com/watch?v=Db-uvuvEEV0"
+        "https://www.youtube.com/watch?v=-5KAN9_CzSA",
+        "https://www.youtube.com/watch?v=kgx4WGK0oNU",
+        "https://www.youtube.com/watch?v=7NOSDKb0HlU",
+        "https://www.youtube.com/watch?v=Db-uvuvEEV0",
+        "https://www.youtube.com/watch?v=gU3k4FhVUJg",
+        "https://www.youtube.com/watch?v=b3HB5AoSjV0",
+        "https://www.youtube.com/watch?v=Lq2pt_1Y6eQ",
+        "https://www.youtube.com/watch?v=9UMxZofMNbA",
+        "https://www.youtube.com/watch?v=05689ErDUdM",
+        "https://www.youtube.com/watch?v=ceqgwo7U28Y"
     ]
     if not url:
         url = random.choice(default_channels)
@@ -52,8 +57,7 @@ async def play(ctx, url: str = ""):
 
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
-        print(info['title'])
-        await client.change_presence(activity=discord.Game(name=info['title']))
+        await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=info['title']))
         url2 = info['formats'][0]['url']
         source = await discord.FFmpegOpusAudio.from_probe(url2, **ffmpeg_options)
         ctx.voice_client.play(source)
@@ -62,7 +66,7 @@ async def play(ctx, url: str = ""):
 @client.command(name="leave", help="I will leave the voice chat.")
 async def leave(ctx):
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-    await client.change_presence(activity=discord.Game(name="Just vibing..."))
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="Just vibing..."))
     if voice.is_connected():
         goodbye_message = ["Later 🤘", "Peace out ✌", "Bye! 👋"]
         print(random.choice(goodbye_message))
@@ -100,7 +104,8 @@ async def stop(ctx):
     voice.stop()
     await ctx.send("⏹ I have stopped the song, you'll need to tell me what song you'll want to play next.")
     print("⏹ I have stopped the song, you'll need to tell me what song you'll want to play next.")
-    await client.change_presence(activity=discord.Game(name="Just vibing..."))
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="Just vibing..."))
+
 
 @client.event
 async def on_ready():
@@ -114,7 +119,7 @@ async def on_ready():
     )
     print(f'{client.user} is ready!')
     print("=============================")
-    await client.change_presence(activity=discord.Game(name="Just vibing..."))
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="Just vibing..."))
 
     # for member in guild.members:
     #     # members = '\n - '.join([member.name for member in guild.members])

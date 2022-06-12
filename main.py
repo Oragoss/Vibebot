@@ -34,6 +34,7 @@ async def play(ctx, url: str = ""):
         "https://www.youtube.com/watch?v=Lq2pt_1Y6eQ",
         "https://www.youtube.com/watch?v=9UMxZofMNbA",
         "https://www.youtube.com/watch?v=05689ErDUdM",
+        "https://www.youtube.com/watch?v=g1UVhexTLWU",
         "https://www.youtube.com/watch?v=ceqgwo7U28Y"
     ]
     if not url:
